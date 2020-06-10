@@ -1,0 +1,41 @@
+
+CREATE TABLE users (
+    u_id NUMBER(10) PRIMARY KEY,
+    username VARCHAR2(50) UNIQUE NOT NULL,
+    password VARCHAR2(50),
+    email VARCHAR2(100) UNIQUE,
+    phone NUMBER(10),
+    CONSTRAINT check_user_phone CHECK (phone > 0)
+);
+
+INSERT INTO users VALUES (id_maker.nextval, 'ryan', 'password', 'ryan@email.com',5555555555);
+INSERT INTO users VALUES (id_maker.nextval, 'sophia', 'password2', 'sophia@email.com',1111111111);
+
+SELECT * FROM users;
+
+SELECT * FROM users WHERE username = 'ryan' AND password = 'password';
+
+commit;
+
+SELECT * FROM users WHERE password = 'password';
+SELECT * FROM users WHERE password = 'password2';
+
+SELECT * FROM users WHERE password = 'password' UNION
+SELECT * FROM users WHERE password = 'password2';
+
+SELECT * FROM users WHERE username = '' UNION
+SELECT * FROM users;
+
+SELECT * FROM users WHERE username = '' UNION
+SELECT * FROM users MINUS
+SELECT * FROM users WHERE username = 'ryan' AND password = 'password';
+
+
+CREATE OR REPLACE PROCEDURE addUser(username VARCHAR2, password VARCHAR2, email VARCHAR2, phone NUMBER)
+IS
+BEGIN
+
+    INSERT INTO users VALUES (id_maker.nextval, username, password, email, phone);
+
+END;
+
